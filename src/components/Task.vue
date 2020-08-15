@@ -1,0 +1,108 @@
+<template>
+  <div>
+    <form @submit.prevent="addTask">
+      <input type="text" class="input-todo" v-model="newTask.title" placeholder="Title" />
+      <input type="date" class="input-todo" v-model="newTask.due" />
+      <button type="submit" class="input-button">Add</button>
+    </form>
+    <ul v-for="(task, index) in tasks" :key="index" class="tasklist">
+      <li>
+        <span class="title_due_status">
+          <strong>{{ task.title }}</strong>
+          <br />
+          {{ task.due }} {{ task.status }}
+        </span>
+        <span class="edit_delete">
+          <span @click="editTask(index)" class="edit">edit</span>
+          <span @click="deleteTask(index)" class="delete">×</span>
+        </span>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  data: function () {
+    return {
+      newTask: {
+        title: "",
+        due: "",
+        status: "",
+      },
+      tasks: [
+        {
+          title: "aaa",
+          due: "dd",
+          status: "未了",
+        },
+      ],
+    };
+  },
+  watch: {
+    tasks: {
+      handler: function () {
+        localStorage.setItem("tasks", JSON.stringify(this.tasks));
+      },
+      deep: true,
+    },
+  },
+  mounted: function () {
+    this.tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  },
+  methods: {
+    addTask() {
+      this.newTask.status = "未了";
+      this.tasks.push(this.newTask);
+      this.newTask = {};
+    },
+    editTask(index) {
+      index;
+    },
+    deleteTask(index) {
+      if (confirm("are you sure?")) {
+        this.tasks.splice(index, 1);
+      }
+    },
+  },
+};
+</script>
+
+<style>
+.tasklist {
+  width: 85%;
+  height: 50px;
+  background-color: white;
+  color: rgb(104, 98, 98);
+  margin: 10px auto;
+  padding: 0 30px;
+  list-style: none;
+}
+
+.input-todo {
+  height: 50px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.input-button {
+  height: 50px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.edit_delete {
+  cursor: pointer;
+  float: right;
+  width: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit:hover {
+  opacity: 0.8;
+}
+.delete:hover {
+  opacity: 0.8;
+}
+</style>
+
