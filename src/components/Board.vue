@@ -15,8 +15,5 @@ export default {
 </script>
 <style>
 .Board {
-  width: 600px;
-  height: 1000px;
-  background-color: rgb(232, 244, 248);
 }
 </style>

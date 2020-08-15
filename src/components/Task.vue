@@ -1,29 +1,31 @@
 <template>
   <div>
-    <form @submit.prevent="addTask">
-      <input type="text" class="input-todo" v-model="newTask.title" placeholder="Title" />
-      <input type="date" class="input-todo" v-model="newTask.due" />
-      <button type="submit" class="input-button">Add</button>
-    </form>
-    <ul v-for="(task, index) in tasks" :key="index" class="tasklist">
-      <li>
-        <span class="title_due_status">
-          <strong>{{ task.title }}</strong>
-          <br />
-          {{ task.due }} {{ task.status }}
-        </span>
-        <span class="edit_delete">
-          <span @click="editTask(index)" class="edit">edit</span>
-          <span @click="deleteTask(index)" class="delete">×</span>
-        </span>
-      </li>
-    </ul>
+    <v-flex>
+      <v-card width="300px" height="200px" class="ml-5 my-5">
+        <v-form class="ml-4 white">
+          <v-text-field label="タイトル" v-model="newTask.title" />
+          <v-text-field type="date" label="期限" v-model="newTask.due" />
+          <v-card-actions @click="addTask">
+            <v-btn style="text-transform: none">Add</v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+
+      <v-list-item v-for="(task, index) in tasks" :key="index">
+        <v-card width="300px" height="150px" class="mx-1 my-1">
+          <v-card-title>{{ task.title }}</v-card-title>
+          <v-card-text> {{ task.due }} {{ task.status }} </v-card-text>
+          <v-btn @click="editTask(index)">edit</v-btn>
+          <v-btn @click="deleteTask(index)">×</v-btn>
+        </v-card>
+      </v-list-item>
+    </v-flex>
   </div>
 </template>
 
 <script>
 export default {
-  data: function () {
+  data: function() {
     return {
       newTask: {
         title: "",
@@ -41,13 +43,13 @@ export default {
   },
   watch: {
     tasks: {
-      handler: function () {
+      handler: function() {
         localStorage.setItem("tasks", JSON.stringify(this.tasks));
       },
       deep: true,
     },
   },
-  mounted: function () {
+  mounted: function() {
     this.tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   },
   methods: {
@@ -70,12 +72,8 @@ export default {
 
 <style>
 .tasklist {
-  width: 85%;
-  height: 50px;
   background-color: white;
   color: rgb(104, 98, 98);
-  margin: 10px auto;
-  padding: 0 30px;
   list-style: none;
 }
 
@@ -105,4 +103,3 @@ export default {
   opacity: 0.8;
 }
 </style>
-
